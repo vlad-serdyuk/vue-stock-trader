@@ -13,7 +13,10 @@ import Header from './components/Header.vue';
  export default {
      components: {
          Header,
-     }
+     },
+     created() {
+         this.$store.dispatch('initStocks');
+     },
  }
 </script>
 
