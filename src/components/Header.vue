@@ -15,8 +15,8 @@
             >
               <a>
                 <ul class="dropdown-menu">
-                  <li>Save data</li>
-                  <li>Load data</li>
+                  <li @click="onSaveData">Save data</li>
+                  <li @click="onLoadData">Load data</li>
                 </ul>
               </a>
             </div>
@@ -29,19 +29,39 @@ import { mapActions } from 'vuex';
 
 export default {
     data() {
-      isDropdownOpen: false,
+      return {
+        isDropdownOpen: false,
+      };
     },
     computed: {
-      return this.$store.getters.funds;
+      funds() {
+        return this.$store.getters.funds;
+      },
     },
     methods: {
-      ...mapActions(['randomizeStocks']),
+      ...mapActions(['randomizeStocks', 'loadData']),
       endDay() {
         this.randomizeStocks();
       },
 
       onDropdownClick() {
         this.isDropdownOpen = !this.isDropdownOpen;
+      },
+
+      onSaveData() {
+        const { funds, stockPortfolio, stocks } = this.$store.getters;
+
+        const data = {
+          funds,
+          stockPortfolio,
+          stocks,
+        };
+
+        this.$http.put('data.json', data);
+      },
+
+      onLoadData() {
+        this.loadData();
       },
     },
 }
